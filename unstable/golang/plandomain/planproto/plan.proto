@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package com.hmbradley.deposit.plan;
+
+import "google/protobuf/timestamp.proto";
+
+message Command {
+  oneof command {
+    CreatePlan createPlan = 2;
+    ArchivePlan archivePlan = 3;
+    UpdatePlan updatePlan = 4;
+    DrainPlan drainPlan = 5;
+    FailDrainPlan failDrainPlan = 6;
+  }
+}
+
+message Event {
+  oneof event {
+    PlanCreated planCreated = 2;
+    PlanUpdated planUpdated = 3;
+    PlanArchived planArchived = 4;
+    PlanDrained planDrained = 5;
+    PlanDrainFailed planDrainFailed = 6;
+  }
+}
+
+message FailDrainPlan {
+  string planId = 1;
+  string transferId = 2;
+  google.protobuf.Timestamp failedAt = 3;
+}
+
+message DrainPlan {
+  string planId = 1;
+  string transferId = 2;
+  google.protobuf.Timestamp drainedAt = 3;
+}
+
+message UpdatePlan {
+  string planId = 1;
+  string title = 2;
+  string color = 3;
+  Amount goalAmount = 4;
+  string description = 5;
+  string icon = 6;
+  google.protobuf.Timestamp updatedAt = 7;
+}
+
+message ArchivePlan {
+  string planId = 1;
+  string archivedBy = 2;
+  google.protobuf.Timestamp archivedAt = 3;
+}
+
+message CreatePlan {
+  string planId = 1;
+  string title = 2;
+  string color = 3;
+  Amount goalAmount = 4;
+  string description = 5;
+  string icon = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  string depositAccountId = 8;
+}
+
+message Amount {
+  int64 amount = 1;
+  string denomination = 2;
+}
+
+message PlanCreated {
+  string planId = 1;
+  string title = 2;
+  string color = 3;
+  Amount goalAmount = 4;
+  string description = 5;
+  string icon = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  string depositAccountId = 8;
+}
+
+message PlanUpdated {
+  string planId = 1;
+  string title = 2;
+  string color = 3;
+  Amount goalAmount = 4;
+  string description = 5;
+  string icon = 6;
+  google.protobuf.Timestamp updatedAt = 7;
+}
+
+message PlanArchived {
+  string planId = 1;
+  string archivedBy = 2;
+  google.protobuf.Timestamp archivedAt = 3;
+}
+
+message PlanDrained {
+  string planId = 1;
+  string transferId = 2;
+  google.protobuf.Timestamp drainedAt = 3;
+}
+
+message PlanDrainFailed {
+  string planId = 1;
+  string transferId = 2;
+  google.protobuf.Timestamp failedAt = 4;
+}
